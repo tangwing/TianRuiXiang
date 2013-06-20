@@ -56,6 +56,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtRoomNum = new System.Windows.Forms.TextBox();
             this.tpAnalyzer = new System.Windows.Forms.TabPage();
+            this.txtLog = new System.Windows.Forms.TextBox();
+            this.btnAnalyze = new System.Windows.Forms.Button();
+            this.txtResult = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.btnPasteAndAnalyze = new System.Windows.Forms.Button();
             this.tabControl.SuspendLayout();
             this.tpValidator.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -67,6 +73,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tpAnalyzer.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -365,6 +372,12 @@
             // 
             // tpAnalyzer
             // 
+            this.tpAnalyzer.Controls.Add(this.btnPasteAndAnalyze);
+            this.tpAnalyzer.Controls.Add(this.label5);
+            this.tpAnalyzer.Controls.Add(this.label4);
+            this.tpAnalyzer.Controls.Add(this.txtResult);
+            this.tpAnalyzer.Controls.Add(this.btnAnalyze);
+            this.tpAnalyzer.Controls.Add(this.txtLog);
             this.tpAnalyzer.Location = new System.Drawing.Point(4, 25);
             this.tpAnalyzer.Name = "tpAnalyzer";
             this.tpAnalyzer.Padding = new System.Windows.Forms.Padding(3);
@@ -372,6 +385,64 @@
             this.tpAnalyzer.TabIndex = 2;
             this.tpAnalyzer.Text = "数据分析";
             this.tpAnalyzer.UseVisualStyleBackColor = true;
+            // 
+            // txtLog
+            // 
+            this.txtLog.Location = new System.Drawing.Point(6, 30);
+            this.txtLog.Multiline = true;
+            this.txtLog.Name = "txtLog";
+            this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtLog.Size = new System.Drawing.Size(503, 512);
+            this.txtLog.TabIndex = 0;
+            this.txtLog.WordWrap = false;
+            this.txtLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtLog_KeyDown);
+            // 
+            // btnAnalyze
+            // 
+            this.btnAnalyze.Location = new System.Drawing.Point(658, 30);
+            this.btnAnalyze.Name = "btnAnalyze";
+            this.btnAnalyze.Size = new System.Drawing.Size(75, 23);
+            this.btnAnalyze.TabIndex = 1;
+            this.btnAnalyze.Text = "分析数据";
+            this.btnAnalyze.UseVisualStyleBackColor = true;
+            this.btnAnalyze.Click += new System.EventHandler(this.btnAnalyze_Click);
+            // 
+            // txtResult
+            // 
+            this.txtResult.Location = new System.Drawing.Point(516, 85);
+            this.txtResult.Multiline = true;
+            this.txtResult.Name = "txtResult";
+            this.txtResult.ReadOnly = true;
+            this.txtResult.Size = new System.Drawing.Size(217, 457);
+            this.txtResult.TabIndex = 2;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(515, 66);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(78, 16);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "分析结果：";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 12);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(148, 16);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "在此处粘贴抄表信息：";
+            // 
+            // btnPasteAndAnalyze
+            // 
+            this.btnPasteAndAnalyze.Location = new System.Drawing.Point(518, 30);
+            this.btnPasteAndAnalyze.Name = "btnPasteAndAnalyze";
+            this.btnPasteAndAnalyze.Size = new System.Drawing.Size(98, 23);
+            this.btnPasteAndAnalyze.TabIndex = 5;
+            this.btnPasteAndAnalyze.Text = "粘贴并分析数据";
+            this.btnPasteAndAnalyze.UseVisualStyleBackColor = true;
+            this.btnPasteAndAnalyze.Click += new System.EventHandler(this.btnPasteAndAnalyze_Click);
             // 
             // Form1
             // 
@@ -401,6 +472,8 @@
             this.splitContainer1.Panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tpAnalyzer.ResumeLayout(false);
+            this.tpAnalyzer.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -434,6 +507,12 @@
         private System.Windows.Forms.Button btnCopyRoomNum;
         private System.Windows.Forms.TextBox txtMeterIdLength;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtLog;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox txtResult;
+        private System.Windows.Forms.Button btnAnalyze;
+        private System.Windows.Forms.Button btnPasteAndAnalyze;
 
     }
 }

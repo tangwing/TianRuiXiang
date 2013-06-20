@@ -223,7 +223,73 @@ namespace 添瑞祥业务助手
             sw.Close();
         }
 
+        private string getMeterId(string logLine)
+        {
+            int indexColon = logLine.IndexOf("：");
+            char[] id = logLine.Substring(indexColon+7, 12).ToCharArray();
+            char tmp;
+            for (int i = 0; i < 3; i++)
+            {
+                int left = 2 * i;
+                int right = id.Length - (i + 1) * 2;
+                tmp = id[left];
+                id[left] = id[right];
+                id[right] = tmp;
 
+                tmp = id[left+1];
+                id[left+1] = id[right+1];
+                id[right+1] = tmp;
+            }
+            return new string(id);
+        }
+        private void btnAnalyze_Click(object sender, EventArgs e)
+        {
+            int successCount = 0;
+            ArrayList alBadMeters = new ArrayList();
+            StringReader sr = new StringReader(txtLog.Text);
+            string line = sr.ReadLine();
+            while (line != null)
+            {
+                if (line.Contains("MBUS抄表命令"))
+                {
+                    string id = getMeterId(line);
+                    line = sr.ReadLine();
+                    if (line.Contains("MBUS接收数据"))//成功
+                    {
+                        if (alBadMeters.Contains(id))
+                            alBadMeters.Remove(id);
+                        successCount++;
+                    }
+                    else
+                    {
+                        if (!alBadMeters.Contains(id))
+                            alBadMeters.Add(id);
+                    }
+                }
+                line = sr.ReadLine();
+            }
+            txtResult.Clear();
+            txtResult.AppendText("分析完毕！"+Environment.NewLine);
+            txtResult.AppendText("抄表总数："+(successCount+alBadMeters.Count) + Environment.NewLine);
+            txtResult.AppendText("成功个数：" + successCount + Environment.NewLine);
+            txtResult.AppendText("失败个数：" + alBadMeters.Count + Environment.NewLine);
+            txtResult.AppendText("失败表号：" + Environment.NewLine);
+            foreach(string meter in alBadMeters)
+                txtResult.AppendText(meter+Environment.NewLine);
+        }
+
+        private void txtLog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control && e.KeyCode == Keys.A)
+                txtLog.SelectAll();
+        }
+
+        private void btnPasteAndAnalyze_Click(object sender, EventArgs e)
+        {
+            txtLog.Clear();
+            txtLog.Paste();
+            btnAnalyze.PerformClick();
+        }
 
 
 
