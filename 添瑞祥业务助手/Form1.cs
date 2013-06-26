@@ -13,7 +13,9 @@ namespace 添瑞祥业务助手
 {
     public partial class Form1 : Form
     {
-        ArrayList alConfig = new ArrayList();
+        ArrayList alConfig = new ArrayList();//store config
+        string cmdFlag = "MBUS";
+
         public Form1()
         {
             InitializeComponent();
@@ -30,8 +32,6 @@ namespace 添瑞祥业务助手
             
         }
 
-        /**
-         * */
         private void loadConfig()
         {
             StreamReader sr = new StreamReader("config.ini");
@@ -108,6 +108,7 @@ namespace 添瑞祥业务助手
                 }
                 
             }
+
             //处理过短数据
             if (shortItems.Count > 0)
             {
@@ -116,7 +117,6 @@ namespace 添瑞祥业务助手
                 foreach (string shorts in shortItems)
                 {
                     rtxtInfo.AppendText(" "+shorts + Environment.NewLine);
-                    //rtxtInfo.s;
                 }
             }
         }
@@ -127,6 +127,7 @@ namespace 添瑞祥业务助手
             txtData.Copy();
         }
 
+        //模式变换
         private void btnTransform_Click(object sender, EventArgs e)
         {
             string data = txtData.Text.Trim().Replace(Environment.NewLine, "\n");
@@ -138,6 +139,7 @@ namespace 添瑞祥业务助手
             }
         }
 
+        //粘贴并测试
         private void btnPasteAndTest_Click(object sender, EventArgs e)
         {
             txtData.Clear();
@@ -150,19 +152,14 @@ namespace 添瑞祥业务助手
             txtData.Paste();
         }
 
-        private void tpGenerator_Click(object sender, EventArgs e)
-        {
-
-           
-
-        }
-
+        
         private void btnCopyRoomNum_Click(object sender, EventArgs e)
         {
             txtRoomNum.SelectAll();
             txtRoomNum.Copy();
         }
 
+        //生成房号
         private void btnGenerate_Click(object sender, EventArgs e)
         {
             if (txtMaxRoomNum.Text.Length < 5 ||
@@ -200,7 +197,7 @@ namespace 添瑞祥业务助手
         }
 
 
-
+        //支持ctrl+A
         private void txtData_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Control && e.KeyCode == Keys.A)
@@ -213,6 +210,7 @@ namespace 添瑞祥业务助手
                 txtRoomNum.SelectAll();
         }
 
+        //默认配置
         private void btnSetDefault_Click(object sender, EventArgs e)
         {
             StreamWriter sw = new StreamWriter("config.ini");
@@ -223,10 +221,21 @@ namespace 添瑞祥业务助手
             sw.Close();
         }
 
-        private string getMeterId(string logLine)
+        //抽取log行中的数据部分
+        private string extractDataStream(string logLine)
         {
-            int indexColon = logLine.IndexOf("：");
-            char[] id = logLine.Substring(indexColon+7, 12).ToCharArray();
+            int i;
+            for (i = 0; i < logLine.Length; i++)
+            {
+                if(char.IsDigit(logLine, i))break;
+            }
+
+            return (i==logLine.Length)?"":logLine.Substring(i);
+        }
+        //抽取表号
+        private string extractMeterIdFromDataStream(string stream)
+        {
+            char[] id = stream.Substring(7, 12).ToCharArray();
             char tmp;
             for (int i = 0; i < 3; i++)
             {
@@ -242,6 +251,8 @@ namespace 添瑞祥业务助手
             }
             return new string(id);
         }
+
+        //抄表数据分析
         private void btnAnalyze_Click(object sender, EventArgs e)
         {
             int successCount = 0;
@@ -250,20 +261,28 @@ namespace 添瑞祥业务助手
             string line = sr.ReadLine();
             while (line != null)
             {
-                if (line.Contains("MBUS抄表命令"))
+                if (line.Contains(cmdFlag))
                 {
-                    string id = getMeterId(line);
-                    line = sr.ReadLine();
-                    if (line.Contains("MBUS接收数据"))//成功
+                    string data = extractDataStream(line);
+                    if (data.Length <= 32 && data.Length > 16)//mbus抄表命令
                     {
-                        if (alBadMeters.Contains(id))
-                            alBadMeters.Remove(id);
-                        successCount++;
-                    }
-                    else
-                    {
-                        if (!alBadMeters.Contains(id))
-                            alBadMeters.Add(id);
+                        string id = extractMeterIdFromDataStream(data);
+                        line = sr.ReadLine();
+                        while (line != null && !line.Contains(cmdFlag))
+                            line = sr.ReadLine();
+                        if (line == null) break;
+                        data = extractDataStream(line);
+                        if (data.Length <= 118 && data.Length > 32)//"MBUS接收数据"成功
+                        {
+                            if (alBadMeters.Contains(id))
+                                alBadMeters.Remove(id);
+                            successCount++;
+                        }
+                        else //超时，失败
+                        {
+                            if (!alBadMeters.Contains(id))
+                                alBadMeters.Add(id);
+                        }
                     }
                 }
                 line = sr.ReadLine();

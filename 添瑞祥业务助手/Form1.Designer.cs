@@ -292,7 +292,7 @@
             this.tpGenerator.TabIndex = 1;
             this.tpGenerator.Text = "数据生成";
             this.tpGenerator.UseVisualStyleBackColor = true;
-            this.tpGenerator.Click += new System.EventHandler(this.tpGenerator_Click);
+            //this.tpGenerator.Click += new System.EventHandler(this.tpGenerator_Click);
             // 
             // splitContainer1
             // 
