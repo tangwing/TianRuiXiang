@@ -246,7 +246,7 @@ namespace 添瑞祥业务助手
         //抽取表号
         private string extractMeterIdFromDataStream(string stream)
         {
-            char[] id = stream.Substring(7, 12).ToCharArray();
+            char[] id = stream.Substring(4, 14).ToCharArray();
             char tmp;
             for (int i = 0; i < 3; i++)
             {
