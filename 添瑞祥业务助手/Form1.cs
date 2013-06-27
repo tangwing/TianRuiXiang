@@ -221,17 +221,28 @@ namespace 添瑞祥业务助手
             sw.Close();
         }
 
-        //抽取log行中的数据部分
+        //抽取并修复log行中的数据部分
         private string extractDataStream(string logLine)
         {
+            string result="";
             int i;
             for (i = 0; i < logLine.Length; i++)
             {
                 if(char.IsDigit(logLine, i))break;
             }
 
-            return (i==logLine.Length)?"":logLine.Substring(i);
+            if (i<logLine.Length)result=logLine.Substring(i);
+            if (result.Length < 32 && result.Length >= 28)//抄表命令 不全
+            {
+                result = "6820".Substring(0, 32 - result.Length)+result;
+            }
+            else if (result.Length < 118 && result.Length >= 114)//接收数据 不全
+            {
+                result = "6820".Substring(0, 118 - result.Length) + result;
+            }
+            return result;
         }
+
         //抽取表号
         private string extractMeterIdFromDataStream(string stream)
         {
@@ -264,7 +275,7 @@ namespace 添瑞祥业务助手
                 if (line.Contains(cmdFlag))
                 {
                     string data = extractDataStream(line);
-                    if (data.Length <= 32 && data.Length > 16)//mbus抄表命令
+                    if (data.Length == 32)//mbus抄表命令
                     {
                         string id = extractMeterIdFromDataStream(data);
                         line = sr.ReadLine();
@@ -272,7 +283,7 @@ namespace 添瑞祥业务助手
                             line = sr.ReadLine();
                         if (line == null) break;
                         data = extractDataStream(line);
-                        if (data.Length <= 118 && data.Length > 32)//"MBUS接收数据"成功
+                        if (data.Length == 118)//"MBUS接收数据"成功
                         {
                             if (alBadMeters.Contains(id))
                                 alBadMeters.Remove(id);
