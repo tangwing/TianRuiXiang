@@ -56,12 +56,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.txtRoomNum = new System.Windows.Forms.TextBox();
             this.tpAnalyzer = new System.Windows.Forms.TabPage();
-            this.txtLog = new System.Windows.Forms.TextBox();
-            this.btnAnalyze = new System.Windows.Forms.Button();
-            this.txtResult = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnPasteAndAnalyze = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtResult = new System.Windows.Forms.TextBox();
+            this.btnAnalyze = new System.Windows.Forms.Button();
+            this.txtLog = new System.Windows.Forms.TextBox();
             this.tabControl.SuspendLayout();
             this.tpValidator.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -91,10 +92,10 @@
             // 
             this.tpValidator.Controls.Add(this.txtData);
             this.tpValidator.Controls.Add(this.panel1);
-            this.tpValidator.Location = new System.Drawing.Point(4, 25);
+            this.tpValidator.Location = new System.Drawing.Point(4, 28);
             this.tpValidator.Name = "tpValidator";
             this.tpValidator.Padding = new System.Windows.Forms.Padding(3);
-            this.tpValidator.Size = new System.Drawing.Size(739, 548);
+            this.tpValidator.Size = new System.Drawing.Size(739, 545);
             this.tpValidator.TabIndex = 0;
             this.tpValidator.Text = "数据验证";
             this.tpValidator.UseVisualStyleBackColor = true;
@@ -237,7 +238,7 @@
             // 
             this.txtMeterIdLength.Location = new System.Drawing.Point(125, 53);
             this.txtMeterIdLength.Name = "txtMeterIdLength";
-            this.txtMeterIdLength.Size = new System.Drawing.Size(176, 25);
+            this.txtMeterIdLength.Size = new System.Drawing.Size(176, 30);
             this.txtMeterIdLength.TabIndex = 4;
             this.txtMeterIdLength.Text = "8";
             // 
@@ -246,7 +247,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(25, 57);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(78, 16);
+            this.label3.Size = new System.Drawing.Size(94, 19);
             this.label3.TabIndex = 3;
             this.label3.Text = "表号位数：";
             // 
@@ -268,7 +269,7 @@
             this.txtPattern.Location = new System.Drawing.Point(125, 24);
             this.txtPattern.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.txtPattern.Name = "txtPattern";
-            this.txtPattern.Size = new System.Drawing.Size(176, 25);
+            this.txtPattern.Size = new System.Drawing.Size(176, 30);
             this.txtPattern.TabIndex = 1;
             this.txtPattern.Text = "111100*";
             // 
@@ -278,21 +279,20 @@
             this.lblPattern.Font = new System.Drawing.Font("STKaiti", 10.2F);
             this.lblPattern.Location = new System.Drawing.Point(25, 28);
             this.lblPattern.Name = "lblPattern";
-            this.lblPattern.Size = new System.Drawing.Size(78, 16);
+            this.lblPattern.Size = new System.Drawing.Size(94, 19);
             this.lblPattern.TabIndex = 0;
             this.lblPattern.Text = "变换模式：";
             // 
             // tpGenerator
             // 
             this.tpGenerator.Controls.Add(this.splitContainer1);
-            this.tpGenerator.Location = new System.Drawing.Point(4, 25);
+            this.tpGenerator.Location = new System.Drawing.Point(4, 28);
             this.tpGenerator.Name = "tpGenerator";
             this.tpGenerator.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGenerator.Size = new System.Drawing.Size(739, 548);
+            this.tpGenerator.Size = new System.Drawing.Size(739, 545);
             this.tpGenerator.TabIndex = 1;
             this.tpGenerator.Text = "数据生成";
             this.tpGenerator.UseVisualStyleBackColor = true;
-            //this.tpGenerator.Click += new System.EventHandler(this.tpGenerator_Click);
             // 
             // splitContainer1
             // 
@@ -339,7 +339,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 41);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(313, 16);
+            this.label2.Size = new System.Drawing.Size(376, 19);
             this.label2.TabIndex = 2;
             this.label2.Text = "例如3-403，意为共3个单元，每单元4层，每层3户";
             // 
@@ -347,7 +347,7 @@
             // 
             this.txtMaxRoomNum.Location = new System.Drawing.Point(184, 8);
             this.txtMaxRoomNum.Name = "txtMaxRoomNum";
-            this.txtMaxRoomNum.Size = new System.Drawing.Size(100, 25);
+            this.txtMaxRoomNum.Size = new System.Drawing.Size(100, 30);
             this.txtMaxRoomNum.TabIndex = 1;
             // 
             // label1
@@ -355,7 +355,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 12);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(190, 16);
+            this.label1.Size = new System.Drawing.Size(230, 19);
             this.label1.TabIndex = 0;
             this.label1.Text = "请输入期望生成的最大房号：";
             // 
@@ -372,19 +372,77 @@
             // 
             // tpAnalyzer
             // 
+            this.tpAnalyzer.Controls.Add(this.button1);
             this.tpAnalyzer.Controls.Add(this.btnPasteAndAnalyze);
             this.tpAnalyzer.Controls.Add(this.label5);
             this.tpAnalyzer.Controls.Add(this.label4);
             this.tpAnalyzer.Controls.Add(this.txtResult);
             this.tpAnalyzer.Controls.Add(this.btnAnalyze);
             this.tpAnalyzer.Controls.Add(this.txtLog);
-            this.tpAnalyzer.Location = new System.Drawing.Point(4, 25);
+            this.tpAnalyzer.Location = new System.Drawing.Point(4, 28);
             this.tpAnalyzer.Name = "tpAnalyzer";
             this.tpAnalyzer.Padding = new System.Windows.Forms.Padding(3);
-            this.tpAnalyzer.Size = new System.Drawing.Size(739, 548);
+            this.tpAnalyzer.Size = new System.Drawing.Size(739, 545);
             this.tpAnalyzer.TabIndex = 2;
             this.tpAnalyzer.Text = "数据分析";
             this.tpAnalyzer.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(519, 496);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(160, 43);
+            this.button1.TabIndex = 6;
+            this.button1.Text = "导出所读信息";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.btnExportMeterResponses);
+            // 
+            // btnPasteAndAnalyze
+            // 
+            this.btnPasteAndAnalyze.Location = new System.Drawing.Point(518, 30);
+            this.btnPasteAndAnalyze.Name = "btnPasteAndAnalyze";
+            this.btnPasteAndAnalyze.Size = new System.Drawing.Size(107, 33);
+            this.btnPasteAndAnalyze.TabIndex = 5;
+            this.btnPasteAndAnalyze.Text = "粘贴并分析数据";
+            this.btnPasteAndAnalyze.UseVisualStyleBackColor = true;
+            this.btnPasteAndAnalyze.Click += new System.EventHandler(this.btnPasteAndAnalyze_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(7, 12);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(179, 19);
+            this.label5.TabIndex = 4;
+            this.label5.Text = "在此处粘贴抄表信息：";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(515, 66);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(94, 19);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "分析结果：";
+            // 
+            // txtResult
+            // 
+            this.txtResult.Location = new System.Drawing.Point(516, 88);
+            this.txtResult.Multiline = true;
+            this.txtResult.Name = "txtResult";
+            this.txtResult.ReadOnly = true;
+            this.txtResult.Size = new System.Drawing.Size(217, 389);
+            this.txtResult.TabIndex = 2;
+            // 
+            // btnAnalyze
+            // 
+            this.btnAnalyze.Location = new System.Drawing.Point(647, 30);
+            this.btnAnalyze.Name = "btnAnalyze";
+            this.btnAnalyze.Size = new System.Drawing.Size(86, 33);
+            this.btnAnalyze.TabIndex = 1;
+            this.btnAnalyze.Text = "分析数据";
+            this.btnAnalyze.UseVisualStyleBackColor = true;
+            this.btnAnalyze.Click += new System.EventHandler(this.btnAnalyze_Click);
             // 
             // txtLog
             // 
@@ -397,57 +455,10 @@
             this.txtLog.WordWrap = false;
             this.txtLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtLog_KeyDown);
             // 
-            // btnAnalyze
-            // 
-            this.btnAnalyze.Location = new System.Drawing.Point(658, 30);
-            this.btnAnalyze.Name = "btnAnalyze";
-            this.btnAnalyze.Size = new System.Drawing.Size(75, 23);
-            this.btnAnalyze.TabIndex = 1;
-            this.btnAnalyze.Text = "分析数据";
-            this.btnAnalyze.UseVisualStyleBackColor = true;
-            this.btnAnalyze.Click += new System.EventHandler(this.btnAnalyze_Click);
-            // 
-            // txtResult
-            // 
-            this.txtResult.Location = new System.Drawing.Point(516, 85);
-            this.txtResult.Multiline = true;
-            this.txtResult.Name = "txtResult";
-            this.txtResult.ReadOnly = true;
-            this.txtResult.Size = new System.Drawing.Size(217, 457);
-            this.txtResult.TabIndex = 2;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(515, 66);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(78, 16);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "分析结果：";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 12);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(148, 16);
-            this.label5.TabIndex = 4;
-            this.label5.Text = "在此处粘贴抄表信息：";
-            // 
-            // btnPasteAndAnalyze
-            // 
-            this.btnPasteAndAnalyze.Location = new System.Drawing.Point(518, 30);
-            this.btnPasteAndAnalyze.Name = "btnPasteAndAnalyze";
-            this.btnPasteAndAnalyze.Size = new System.Drawing.Size(98, 23);
-            this.btnPasteAndAnalyze.TabIndex = 5;
-            this.btnPasteAndAnalyze.Text = "粘贴并分析数据";
-            this.btnPasteAndAnalyze.UseVisualStyleBackColor = true;
-            this.btnPasteAndAnalyze.Click += new System.EventHandler(this.btnPasteAndAnalyze_Click);
-            // 
             // Form1
             // 
             this.AllowDrop = true;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 19F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(771, 601);
             this.Controls.Add(this.tabControl);
@@ -513,6 +524,7 @@
         private System.Windows.Forms.TextBox txtResult;
         private System.Windows.Forms.Button btnAnalyze;
         private System.Windows.Forms.Button btnPasteAndAnalyze;
+        private System.Windows.Forms.Button button1;
 
     }
 }

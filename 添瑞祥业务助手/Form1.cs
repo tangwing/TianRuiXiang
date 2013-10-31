@@ -14,6 +14,7 @@ namespace 添瑞祥业务助手
     public partial class Form1 : Form
     {
         ArrayList alConfig = new ArrayList();//store config
+        ArrayList alCurrentGoodMeters =null;
         string cmdFlag = "MBUS";
 
         public Form1()
@@ -267,11 +268,14 @@ namespace 添瑞祥业务助手
         private void btnAnalyze_Click(object sender, EventArgs e)
         {
             int successCount = 0;
+            alCurrentGoodMeters = null;
+            ArrayList alGoodMeters = new ArrayList();
             ArrayList alBadMeters = new ArrayList();
             StringReader sr = new StringReader(txtLog.Text);
             string line = sr.ReadLine();
             while (line != null)
             {
+                line=line.Replace(" ","");
                 if (line.Contains(cmdFlag))
                 {
                     string data = extractDataStream(line);
@@ -281,13 +285,20 @@ namespace 添瑞祥业务助手
                         line = sr.ReadLine();
                         while (line != null && !line.Contains(cmdFlag))
                             line = sr.ReadLine();
-                        if (line == null) break;
+                        if (line == null)
+                        {
+                            if (!alBadMeters.Contains(id))
+                                alBadMeters.Add(id);
+                            break;
+                        }
+                        line = line.Replace(" ", "");
                         data = extractDataStream(line);
                         if (data.Length == 118)//"MBUS接收数据"成功
                         {
                             if (alBadMeters.Contains(id))
                                 alBadMeters.Remove(id);
                             successCount++;
+                            alGoodMeters.Add(new MeterResponse(data));
                         }
                         else //超时，失败
                         {
@@ -306,6 +317,7 @@ namespace 添瑞祥业务助手
             txtResult.AppendText("失败表号：" + Environment.NewLine);
             foreach(string meter in alBadMeters)
                 txtResult.AppendText(meter+Environment.NewLine);
+            alCurrentGoodMeters = alGoodMeters;
         }
 
         private void txtLog_KeyDown(object sender, KeyEventArgs e)
@@ -319,6 +331,21 @@ namespace 添瑞祥业务助手
             txtLog.Clear();
             txtLog.Paste();
             btnAnalyze.PerformClick();
+        }
+
+        private void btnExportMeterResponses(object sender, EventArgs e)
+        {
+            if (alCurrentGoodMeters != null)
+            {
+                StreamWriter sw = new StreamWriter("info.csv");
+                sw.WriteLine("表号;当前冷量;当前热量;热功率;瞬时流量;累计流量;供水温度;回水温度;累计工作时间;实时时间;电池电压;积分仪;进水温度传感器;回水温度传感器;流量传感器");
+                foreach (MeterResponse mr in alCurrentGoodMeters)
+                {
+                    sw.WriteLine(mr.toString(";"));
+                }
+                sw.Close();
+            }
+            
         }
 
 
