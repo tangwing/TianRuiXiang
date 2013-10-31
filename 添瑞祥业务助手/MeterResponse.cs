@@ -13,16 +13,23 @@ namespace 添瑞祥业务助手
     class MeterResponse
     {
         string data;
-        public string id;
-        public string lengLiang;
-        public string reLiang;
+        string id;
+        string lengLiang;
+        public static string lengLiangDanWei="";
+        string reLiang;
+        public static string reLiangDanWei = "";
         string reGongLv;
+        public static string reGongLvDanWei = "";
         string shunShiLiuLiang;
+        public static string shunShiLiuLiangDanWei = "";
         string leiJiLiuLiang;
-        string gongShuiWenDu;
-        string huiShuiWenDu;
-        string leiJiGongWuoShiJian;
+        public static string leiJiLiuLiangDanWei = "";
+        double gongShuiWenDu;
+        double huiShuiWenDu;
+        string leiJiGongZuoShiJian;
         string shiShiShiJian;
+        string state = null;
+
         string dianChiDianYa="Normal";
         string jiFenYi="Normal";
         string jinShuiWenDuChuanGanQi = "Normal";
@@ -46,7 +53,7 @@ namespace 添瑞祥业务助手
             unitDic.Add("17", "kW");
             unitDic.Add("1A", "MW");
             unitDic.Add("29", "L");
-            unitDic.Add("2C", "m^3");
+            unitDic.Add("2C", "m3");
             unitDic.Add("32", "L/h");
             unitDic.Add("35", "m^3/h");
         }
@@ -68,46 +75,58 @@ namespace 添瑞祥业务助手
             field = data.Substring(28,8);
             lengLiang=inverseData(field);
             lengLiang=lengLiang.TrimStart(toTrim);
+            if (lengLiang.Length == 0) lengLiang = "0";
+
             field = data.Substring(36, 2);//unit
-            lengLiang += unitDic[field];
+            lengLiangDanWei = unitDic[field];
         //reLiang
             field = data.Substring(38, 8);
             reLiang = inverseData(field);
             reLiang = reLiang.TrimStart(toTrim);
+            if (reLiang.Length == 0) reLiang = "0";
+
             field = data.Substring(46, 2);//unit
-            reLiang += unitDic[field];
+            reLiangDanWei = unitDic[field];
         //reGongLv
             field = data.Substring(48, 8);
             reGongLv = inverseData(field);
             reGongLv = reGongLv.TrimStart(toTrim);
+            if (reGongLv.Length == 0) reGongLv = "0";
+
             field = data.Substring(56, 2);//unit
-            reGongLv += unitDic[field];
+            reGongLvDanWei = unitDic[field];
         //shunShiLvLiang
             field = data.Substring(58, 8);
             shunShiLiuLiang = inverseData(field);
             shunShiLiuLiang = shunShiLiuLiang.TrimStart(toTrim);
+            if (shunShiLiuLiang.Length == 0) shunShiLiuLiang = "0";
+
             field = data.Substring(66, 2);//unit
-            shunShiLiuLiang += unitDic[field];
+            shunShiLiuLiangDanWei = unitDic[field];
         //leiJiLiuLiang
             field = data.Substring(68, 8);
             leiJiLiuLiang = inverseData(field);
             leiJiLiuLiang = leiJiLiuLiang.TrimStart(toTrim);
+            if (leiJiLiuLiang.Length == 0) leiJiLiuLiang = "0";
+
             field = data.Substring(76, 2);//unit
-            leiJiLiuLiang += unitDic[field];
+            leiJiLiuLiangDanWei = unitDic[field];
         //gongShuiWenDu
-            field = data.Substring(78, 6);
-            field = field.Insert(2, ". ");
-            gongShuiWenDu = inverseData(field);
-            gongShuiWenDu = gongShuiWenDu.TrimStart(toTrim)+"C";
+            field = data.Substring(78, 2);
+            int fraction = int.Parse(field);
+            field = data.Substring(80, 2);
+            int integer = int.Parse(field);
+            gongShuiWenDu = integer + (double)fraction / 100;
         //huiShuiWendu
-            field = data.Substring(84, 6);
-            field = field.Insert(2, ". ");
-            huiShuiWenDu = inverseData(field);
-            huiShuiWenDu = huiShuiWenDu.TrimStart(toTrim) + "C";
+            field = data.Substring(84, 2);//82,83 not used
+            fraction = int.Parse(field);
+            field = data.Substring(86, 2);
+            integer = int.Parse(field);
+            huiShuiWenDu = integer + (double)fraction / 100;
         //leiJiGongWuoShiJian
-            field = data.Substring(90, 6);
-            leiJiGongWuoShiJian = inverseData(field);
-            leiJiGongWuoShiJian = leiJiGongWuoShiJian.TrimStart(toTrim)+"h";
+            field = data.Substring(90, 6);//88,89 not used
+            leiJiGongZuoShiJian = inverseData(field);
+            leiJiGongZuoShiJian = leiJiGongZuoShiJian.TrimStart(toTrim);// +"h";
         //shiShiGongWuoShiJian
             field = data.Substring(96, 14);
             shiShiShiJian = inverseData(field);
@@ -118,17 +137,18 @@ namespace 添瑞祥业务助手
             shiShiShiJian = shiShiShiJian.Insert(6, "-");
             shiShiShiJian = shiShiShiJian.Insert(4, "-");
         //ZhuangTai1 (dianChiDianYa)
-            if (data[111] == '4') dianChiDianYa = "欠压";
+            if (data[111] == '4') this.state = "电池欠压/";
         //ZhuangTai2
             field = data.Substring(112, 2);
             int state = int.Parse(field);
-            if (state % 2 == 1) jiFenYi = "故障";
+            if (state % 2 == 1) this.state += "积分仪故障/";
             state/=2;
-            if (state % 2 == 1) jinShuiWenDuChuanGanQi = "故障";
+            if (state % 2 == 1) this.state += "进水温度传感器故障/";
             state /= 2;
-            if (state % 2 == 1) huiShuiWenDuChuanGanQi = "故障";
+            if (state % 2 == 1) this.state += "回水温度传感器故障/";
             state /= 2;
-            if (state % 2 == 1) liuLiangChuanGanQi = "故障";
+            if (state % 2 == 1) this.state += "流量传感器故障";
+            if (this.state == null) this.state = "正常";
         }
 
         //Inverse the data order
@@ -151,21 +171,17 @@ namespace 添瑞祥业务助手
             return new string(id);
         }
 
-        public string toString(string delim="\n")
+        public string toCSVString(string delim="\n")
         {
-            return id + delim + lengLiang + delim + reLiang+
-                delim+reGongLv+
-                delim+shunShiLiuLiang+
-                delim+leiJiLiuLiang+
-                delim+gongShuiWenDu+
-                delim+huiShuiWenDu+
-                delim+leiJiGongWuoShiJian+
-                delim+shiShiShiJian+
-                delim+dianChiDianYa+
-                delim+jiFenYi+
-                delim+jinShuiWenDuChuanGanQi +
-                delim+huiShuiWenDuChuanGanQi +
-                delim+liuLiangChuanGanQi;
+            return id +
+                delim + reLiang +
+                delim + gongShuiWenDu +
+                delim + huiShuiWenDu +
+                delim + (gongShuiWenDu-huiShuiWenDu).ToString("F2") +
+                delim + leiJiLiuLiang +
+                delim + state+
+                delim + shiShiShiJian 
+                ;
         }
         
         private string extractMeterIdFromDataStream(string stream)

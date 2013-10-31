@@ -334,16 +334,29 @@ namespace 添瑞祥业务助手
         }
 
         private void btnExportMeterResponses(object sender, EventArgs e)
-        {
+        { 
             if (alCurrentGoodMeters != null)
             {
-                StreamWriter sw = new StreamWriter("info.csv");
-                sw.WriteLine("表号;当前冷量;当前热量;热功率;瞬时流量;累计流量;供水温度;回水温度;累计工作时间;实时时间;电池电压;积分仪;进水温度传感器;回水温度传感器;流量传感器");
-                foreach (MeterResponse mr in alCurrentGoodMeters)
+                try
                 {
-                    sw.WriteLine(mr.toString(";"));
+                    var utf8WithoutBom = new System.Text.UTF8Encoding(true);
+                    StreamWriter sw = new StreamWriter("export.csv",false,utf8WithoutBom);
+                    //MessageBox.Show(sw.Encoding.ToString());
+                    sw.WriteLine("序号;表地址;当前热量(" + MeterResponse.reLiangDanWei + ");供水温度(℃);回水温度(℃);温差(℃);累计流量(" + MeterResponse.leiJiLiuLiangDanWei + ");报警信息;表内时间");
+                    int counter = 1;
+                    foreach (MeterResponse mr in alCurrentGoodMeters)
+                    {
+                        sw.Write(counter + ";");
+                        sw.WriteLine(mr.toCSVString(";"));
+                        counter++;
+                    }
+                    sw.Close();
+                    MessageBox.Show("数据已导出为当前文件夹下的export.csv文件！");
                 }
-                sw.Close();
+                catch (System.IO.IOException)
+                {
+                    MessageBox.Show("info.csv文件正在使用！请将其关闭后重试");
+                }
             }
             
         }
