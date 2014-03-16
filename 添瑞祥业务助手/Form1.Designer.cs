@@ -93,6 +93,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btnExport = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.cbOutputToSrc = new System.Windows.Forms.CheckBox();
             this.cbAutoOpen = new System.Windows.Forms.CheckBox();
             this.tbDest2 = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
@@ -105,8 +106,10 @@
             this.label16 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.ofdIn = new System.Windows.Forms.OpenFileDialog();
-            this.cbOutputToSrc = new System.Windows.Forms.CheckBox();
             this.ofdOut = new System.Windows.Forms.OpenFileDialog();
+            this.label11 = new System.Windows.Forms.Label();
+            this.rbHtml = new System.Windows.Forms.RadioButton();
+            this.rbXls = new System.Windows.Forms.RadioButton();
             this.tabControl.SuspendLayout();
             this.tpValidator.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -531,7 +534,6 @@
             // 
             // splitContainer2.Panel1
             // 
-            this.splitContainer2.Panel1.Controls.Add(this.panel5);
             this.splitContainer2.Panel1.Controls.Add(this.groupBox4);
             this.splitContainer2.Panel1.Controls.Add(this.tbJiBenRenFei);
             this.splitContainer2.Panel1.Controls.Add(this.label10);
@@ -548,20 +550,23 @@
             // 
             // panel5
             // 
+            this.panel5.Controls.Add(this.rbXls);
+            this.panel5.Controls.Add(this.rbHtml);
+            this.panel5.Controls.Add(this.label11);
             this.panel5.Controls.Add(this.tbInputLastY);
             this.panel5.Controls.Add(this.label14);
             this.panel5.Controls.Add(this.btnOpenLastYear);
             this.panel5.Controls.Add(this.label13);
             this.panel5.Controls.Add(this.tbInputDir);
             this.panel5.Controls.Add(this.btnOpenThisYear);
-            this.panel5.Location = new System.Drawing.Point(31, 373);
+            this.panel5.Location = new System.Drawing.Point(6, 66);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(270, 116);
+            this.panel5.Size = new System.Drawing.Size(270, 161);
             this.panel5.TabIndex = 14;
             // 
             // tbInputLastY
             // 
-            this.tbInputLastY.Location = new System.Drawing.Point(6, 77);
+            this.tbInputLastY.Location = new System.Drawing.Point(6, 105);
             this.tbInputLastY.Name = "tbInputLastY";
             this.tbInputLastY.Size = new System.Drawing.Size(189, 23);
             this.tbInputLastY.TabIndex = 9;
@@ -569,7 +574,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(3, 10);
+            this.label14.Location = new System.Drawing.Point(3, 38);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(92, 17);
             this.label14.TabIndex = 5;
@@ -577,7 +582,7 @@
             // 
             // btnOpenLastYear
             // 
-            this.btnOpenLastYear.Location = new System.Drawing.Point(201, 76);
+            this.btnOpenLastYear.Location = new System.Drawing.Point(201, 104);
             this.btnOpenLastYear.Name = "btnOpenLastYear";
             this.btnOpenLastYear.Size = new System.Drawing.Size(66, 24);
             this.btnOpenLastYear.TabIndex = 10;
@@ -588,7 +593,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(3, 57);
+            this.label13.Location = new System.Drawing.Point(3, 85);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(92, 17);
             this.label13.TabIndex = 6;
@@ -596,14 +601,14 @@
             // 
             // tbInputDir
             // 
-            this.tbInputDir.Location = new System.Drawing.Point(6, 31);
+            this.tbInputDir.Location = new System.Drawing.Point(6, 59);
             this.tbInputDir.Name = "tbInputDir";
             this.tbInputDir.Size = new System.Drawing.Size(189, 23);
             this.tbInputDir.TabIndex = 7;
             // 
             // btnOpenThisYear
             // 
-            this.btnOpenThisYear.Location = new System.Drawing.Point(201, 30);
+            this.btnOpenThisYear.Location = new System.Drawing.Point(201, 58);
             this.btnOpenThisYear.Name = "btnOpenThisYear";
             this.btnOpenThisYear.Size = new System.Drawing.Size(66, 24);
             this.btnOpenThisYear.TabIndex = 8;
@@ -613,10 +618,11 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.panel5);
             this.groupBox4.Controls.Add(this.panel6);
             this.groupBox4.Location = new System.Drawing.Point(25, 294);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(285, 214);
+            this.groupBox4.Size = new System.Drawing.Size(285, 233);
             this.groupBox4.TabIndex = 7;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "输入参数";
@@ -634,7 +640,7 @@
             // rbSY
             // 
             this.rbSY.AutoSize = true;
-            this.rbSY.Location = new System.Drawing.Point(141, 7);
+            this.rbSY.Location = new System.Drawing.Point(148, 7);
             this.rbSY.Name = "rbSY";
             this.rbSY.Size = new System.Drawing.Size(54, 21);
             this.rbSY.TabIndex = 13;
@@ -823,6 +829,18 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "导出参数";
             // 
+            // cbOutputToSrc
+            // 
+            this.cbOutputToSrc.AutoSize = true;
+            this.cbOutputToSrc.Checked = true;
+            this.cbOutputToSrc.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbOutputToSrc.Location = new System.Drawing.Point(17, 162);
+            this.cbOutputToSrc.Name = "cbOutputToSrc";
+            this.cbOutputToSrc.Size = new System.Drawing.Size(111, 21);
+            this.cbOutputToSrc.TabIndex = 18;
+            this.cbOutputToSrc.Text = "输出到源目录";
+            this.cbOutputToSrc.UseVisualStyleBackColor = true;
+            // 
             // cbAutoOpen
             // 
             this.cbAutoOpen.AutoSize = true;
@@ -925,25 +943,44 @@
             // ofdIn
             // 
             this.ofdIn.DefaultExt = "xls";
-            this.ofdIn.Filter = "\"Excel Files|*.xls|All Files|*.*\"";
-            // 
-            // cbOutputToSrc
-            // 
-            this.cbOutputToSrc.AutoSize = true;
-            this.cbOutputToSrc.Checked = true;
-            this.cbOutputToSrc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbOutputToSrc.Location = new System.Drawing.Point(17, 162);
-            this.cbOutputToSrc.Name = "cbOutputToSrc";
-            this.cbOutputToSrc.Size = new System.Drawing.Size(111, 21);
-            this.cbOutputToSrc.TabIndex = 18;
-            this.cbOutputToSrc.Text = "输出到源目录";
-            this.cbOutputToSrc.UseVisualStyleBackColor = true;
+            this.ofdIn.Filter = "Excel Files|*.xls|All Files|*.*";
             // 
             // ofdOut
             // 
             this.ofdOut.CheckFileExists = false;
             this.ofdOut.DefaultExt = "xls";
-            this.ofdOut.Filter = "\"Excel Files|*.xls|All Files|*.*\"";
+            this.ofdOut.Filter = "Excel Files|*.xls|All Files|*.*";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(8, 12);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(64, 17);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "文件格式";
+            // 
+            // rbHtml
+            // 
+            this.rbHtml.AutoSize = true;
+            this.rbHtml.Checked = true;
+            this.rbHtml.Location = new System.Drawing.Point(78, 8);
+            this.rbHtml.Name = "rbHtml";
+            this.rbHtml.Size = new System.Drawing.Size(64, 21);
+            this.rbHtml.TabIndex = 12;
+            this.rbHtml.TabStop = true;
+            this.rbHtml.Text = "HTML";
+            this.rbHtml.UseVisualStyleBackColor = true;
+            // 
+            // rbXls
+            // 
+            this.rbXls.AutoSize = true;
+            this.rbXls.Location = new System.Drawing.Point(148, 8);
+            this.rbXls.Name = "rbXls";
+            this.rbXls.Size = new System.Drawing.Size(52, 21);
+            this.rbXls.TabIndex = 13;
+            this.rbXls.Text = "XLS";
+            this.rbXls.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1078,6 +1115,9 @@
         private System.Windows.Forms.OpenFileDialog ofdIn;
         private System.Windows.Forms.CheckBox cbOutputToSrc;
         private System.Windows.Forms.OpenFileDialog ofdOut;
+        private System.Windows.Forms.RadioButton rbXls;
+        private System.Windows.Forms.RadioButton rbHtml;
+        private System.Windows.Forms.Label label11;
 
     }
 }

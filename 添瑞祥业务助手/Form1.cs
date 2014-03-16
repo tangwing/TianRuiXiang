@@ -14,6 +14,7 @@ using System.IO;
 using NPOI.HSSF.UserModel;
 using NPOI.HSSF.Util;
 using NPOI.SS.UserModel;
+using HtmlAgilityPack;
 using BorderStyle = NPOI.SS.UserModel.BorderStyle;
 
 namespace 添瑞祥业务助手
@@ -406,130 +407,170 @@ namespace 添瑞祥业务助手
         private void btnExport_Click(object sender, EventArgs e)
         {
             saveFeeCalculateConfig();
-            using (FileStream fs = File.OpenRead(tbInputDir.Text))
+
+            ISheet sheetIn = null;
+            ISheet sheetIn2 = null;
+            //Deal with html file
+            if (rbHtml.Checked)
             {
-                IWorkbook input = WorkbookFactory.Create(fs);
-                ISheet sheetIn = input.GetSheetAt(0);
-                ISheet sheetIn2 = null;
+                sheetIn = HtmlTableToXlsSheet(tbInputDir.Text);
                 if (!string.IsNullOrEmpty(tbInputLastY.Text))
-                {
-                    FileStream fs2 = File.OpenRead(tbInputLastY.Text);
-                    sheetIn2 = WorkbookFactory.Create(fs2).GetSheetAt(0);
-                }
-                //Init result file header
-                HSSFWorkbook output = new HSSFWorkbook();
-                ISheet sheetOut = output.CreateSheet(sheetIn.SheetName);
-                IRow rowOut = sheetOut.CreateRow(0);
-                //Border style
-                ICellStyle style = output.CreateCellStyle();
-                style.BorderBottom = BorderStyle.Thin;
-                style.BorderTop = BorderStyle.Thin;
-                style.BorderRight = BorderStyle.Thin;
-                style.BorderLeft = BorderStyle.Thin;
-                //header style
-                var hearderFont = output.CreateFont();
-                hearderFont.Boldweight = 700;
-                hearderFont.Color = HSSFColor.White.Index;
-                ICellStyle headerstyle = output.CreateCellStyle();
-                headerstyle.CloneStyleFrom(style);
-                headerstyle.FillForegroundColor = HSSFColor.Grey50Percent.Index;
-                headerstyle.FillPattern = FillPattern.SolidForeground;
-                headerstyle.SetFont(hearderFont);
+                    sheetIn2 =HtmlTableToXlsSheet(tbInputLastY.Text);
+            }
+            else
+            {
+                sheetIn = WorkbookFactory.Create(File.OpenRead(tbInputDir.Text)).GetSheetAt(0);
+                if (!string.IsNullOrEmpty(tbInputLastY.Text))
+                    sheetIn2 = WorkbookFactory.Create(File.OpenRead(tbInputLastY.Text)).GetSheetAt(0);
+            }
 
-                rowOut.CreateCell(0).SetCellValue("序号");
-                rowOut.CreateCell(1,CellType.String).SetCellValue("DTU设备");
-                rowOut.CreateCell(2,CellType.String).SetCellValue("小区");
-                rowOut.CreateCell(3,CellType.String).SetCellValue("用户姓名");
-                rowOut.CreateCell(4,CellType.String).SetCellValue("用户地址");
-                rowOut.CreateCell(5,CellType.String).SetCellValue("表地址");
-                rowOut.CreateCell(6,CellType.String).SetCellValue("热表厂家");
-                rowOut.CreateCell(7,CellType.String).SetCellValue("热表口径");
-                rowOut.CreateCell(8, CellType.Numeric).SetCellValue("上年度热量");
-                rowOut.CreateCell(9, CellType.Numeric).SetCellValue("本年度热量");
-                rowOut.CreateCell(10, CellType.Numeric).SetCellValue("消耗热量");
-                rowOut.CreateCell(11,CellType.String).SetCellValue("抄表时间");
-                rowOut.CreateCell(12,CellType.String).SetCellValue("用户类别");
-                rowOut.CreateCell(13,CellType.Numeric).SetCellValue("房产面积");
-                rowOut.CreateCell(14,CellType.Numeric).SetCellValue("居民热价(元/M²)");
-                double reJiLiang = double.Parse(rbPT.Checked ? tbReJiLiangPT.Text : tbReJiLiangSY.Text);
-                rowOut.CreateCell(15,CellType.Numeric).SetCellValue("计量价格("+reJiLiang+"元/KWH）");
-                rowOut.CreateCell(16,CellType.Numeric).SetCellValue("基础热价(元)");
-                rowOut.CreateCell(17,CellType.Numeric).SetCellValue("按面积收费额(元)");
-                rowOut.CreateCell(18,CellType.Numeric).SetCellValue("计量收费额(元)");
-                rowOut.CreateCell(19, CellType.Numeric).SetCellValue("核算结果(元)");
+            //Init result file header
+            HSSFWorkbook output = new HSSFWorkbook();
+            ISheet sheetOut = output.CreateSheet(sheetIn.SheetName);
+            IRow rowOut = sheetOut.CreateRow(0);
+            //Border style
+            ICellStyle style = output.CreateCellStyle();
+            style.BorderBottom = BorderStyle.Thin;
+            style.BorderTop = BorderStyle.Thin;
+            style.BorderRight = BorderStyle.Thin;
+            style.BorderLeft = BorderStyle.Thin;
+            //header style
+            var hearderFont = output.CreateFont();
+            hearderFont.Boldweight = 700;
+            hearderFont.Color = HSSFColor.White.Index;
+            ICellStyle headerstyle = output.CreateCellStyle();
+            headerstyle.CloneStyleFrom(style);
+            headerstyle.FillForegroundColor = HSSFColor.Grey50Percent.Index;
+            headerstyle.FillPattern = FillPattern.SolidForeground;
+            headerstyle.SetFont(hearderFont);
+
+            rowOut.CreateCell(0).SetCellValue("序号");
+            rowOut.CreateCell(1,CellType.String).SetCellValue("DTU设备");
+            rowOut.CreateCell(2,CellType.String).SetCellValue("小区");
+            rowOut.CreateCell(3,CellType.String).SetCellValue("用户姓名");
+            rowOut.CreateCell(4,CellType.String).SetCellValue("用户地址");
+            rowOut.CreateCell(5,CellType.String).SetCellValue("表地址");
+            rowOut.CreateCell(6,CellType.String).SetCellValue("热表厂家");
+            rowOut.CreateCell(7,CellType.String).SetCellValue("热表口径");
+            rowOut.CreateCell(8, CellType.Numeric).SetCellValue("上年度热量");
+            rowOut.CreateCell(9, CellType.Numeric).SetCellValue("本年度热量");
+            rowOut.CreateCell(10, CellType.Numeric).SetCellValue("消耗热量");
+            rowOut.CreateCell(11,CellType.String).SetCellValue("抄表时间");
+            rowOut.CreateCell(12,CellType.String).SetCellValue("用户类别");
+            rowOut.CreateCell(13,CellType.Numeric).SetCellValue("房产面积");
+            rowOut.CreateCell(14,CellType.Numeric).SetCellValue("居民热价(元/M²)");
+            double reJiLiang = double.Parse(rbPT.Checked ? tbReJiLiangPT.Text : tbReJiLiangSY.Text);
+            rowOut.CreateCell(15,CellType.Numeric).SetCellValue("计量价格("+reJiLiang+"元/KWH）");
+            rowOut.CreateCell(16,CellType.Numeric).SetCellValue("基础热价(元)");
+            rowOut.CreateCell(17,CellType.Numeric).SetCellValue("按面积收费额(元)");
+            rowOut.CreateCell(18,CellType.Numeric).SetCellValue("计量收费额(元)");
+            rowOut.CreateCell(19, CellType.Numeric).SetCellValue("核算结果(元)");
                 
 
-                //Get residence name
-                string residence = sheetIn.GetRow(1).GetCell(0).StringCellValue;
-                residence = residence.Substring(residence.IndexOf("小区:", System.StringComparison.Ordinal));
-                residence = residence.Substring(3, residence.IndexOf("(", System.StringComparison.Ordinal)-3).Trim();
-                Console.WriteLine(residence);
-                //Loop
-                int rowCount = sheetIn.LastRowNum - 4;
-                for(int ind=0; ind<rowCount; ind++)
-                {
-                    IRow rowSrc = sheetIn.GetRow(ind + 3);
-                    IRow row = sheetOut.CreateRow(ind+1);
-                    row.CreateCell(0).SetCellValue(ind + 1);
-                    row.CreateCell(1).SetCellValue("M-BUS");
-                    row.CreateCell(2).SetCellValue(residence);
-                    row.CreateCell(3).SetCellValue(rowSrc.GetCell(1).StringCellValue);
-                    row.CreateCell(4).SetCellValue(rowSrc.GetCell(2).StringCellValue);
-                    row.CreateCell(5).SetCellValue(rowSrc.GetCell(3).StringCellValue);
-                    row.CreateCell(6).SetCellValue("添瑞祥");
-                    row.CreateCell(7).SetCellValue("DN20");
-                    if(sheetIn2 == null)
-                        row.CreateCell(8).SetCellValue(0);//上热量
-                    else row.CreateCell(8).SetCellValue(sheetIn2.GetRow(ind+3).GetCell(4).NumericCellValue);//上热量
-                    row.CreateCell(9).SetCellValue(rowSrc.GetCell(4).NumericCellValue);//本年热量. 
-                    row.CreateCell(10).SetCellFormula("J"+(ind+2)+"-I"+(ind+2));//热量
-                    DateTime date = rowSrc.GetCell(11).DateCellValue;
-                    row.CreateCell(11).SetCellValue(date.ToString("d"));
-                    //row.CreateCell(11).SetCellValue(date.Substring(0, date.IndexOf(" ", System.StringComparison.Ordinal)));
-                    row.CreateCell(12).SetCellValue(rbPT.Checked ? "居民" : "商业");
-                    row.CreateCell(13).SetCellValue(rowSrc.GetCell(10).NumericCellValue);
-                    row.CreateCell(14).SetCellValue(double.Parse(rbPT.Checked ? tbQuNuanFeiPT.Text: tbQuNuanFeiSY.Text));
-                    string tmp = "K" + (ind + 2) + "*\"" + reJiLiang.ToString(CultureInfo.CurrentCulture)+"\"";
-                    row.CreateCell(15).SetCellFormula(tmp);
-                    row.CreateCell(16).SetCellFormula("\""+tbJiBenRenFei.Text + "\"*R" + (ind + 2));//JiChuReJia
-                    row.CreateCell(17).SetCellFormula("N" + (ind + 2) + "*O" + (ind + 2));//
-                    row.CreateCell(18).SetCellFormula("Q" + (ind + 2) + "+P" + (ind + 2));//
-                    row.CreateCell(19).SetCellFormula("R" + (ind + 2) + "-S" + (ind + 2));//
-                    //set style
-                    for (var i = 0; i < 20; i++) row.GetCell(i).CellStyle = style;
-                }
-                for(var i=0; i<20; i++)
-                {
-                    sheetOut.AutoSizeColumn(i);
-                    sheetOut.GetRow(0).GetCell(i).CellStyle = headerstyle;
-                }
+            //Get residence name
+            string residence = sheetIn.GetRow(1).GetCell(0).StringCellValue;
+            residence = residence.Substring(residence.IndexOf("小区:", System.StringComparison.Ordinal));
+            residence = residence.Substring(3, residence.IndexOf("(", System.StringComparison.Ordinal)-3).Trim();
+            Console.WriteLine(residence);
+            //Loop
+            int rowCount = sheetIn.LastRowNum - 4;
+            for(int ind=0; ind<rowCount; ind++)
+            {
+                IRow rowSrc = sheetIn.GetRow(ind + 3);
+                IRow row = sheetOut.CreateRow(ind+1);
+                row.CreateCell(0).SetCellValue(ind + 1);
+                row.CreateCell(1).SetCellValue("M-BUS");
+                row.CreateCell(2).SetCellValue(residence);
+                row.CreateCell(3).SetCellValue(rowSrc.GetCell(1).StringCellValue);
+                row.CreateCell(4).SetCellValue(rowSrc.GetCell(2).StringCellValue);
+                row.CreateCell(5).SetCellValue(rowSrc.GetCell(3).StringCellValue);
+                row.CreateCell(6).SetCellValue("添瑞祥");
+                row.CreateCell(7).SetCellValue("DN20");
+                if(sheetIn2 == null)
+                    row.CreateCell(8).SetCellValue(0);//上热量
+                else row.CreateCell(8).SetCellValue(sheetIn2.GetRow(ind+3).GetCell(4).NumericCellValue);//上热量
+                row.CreateCell(9).SetCellValue(rowSrc.GetCell(4).NumericCellValue);//本年热量. 
+                row.CreateCell(10).SetCellFormula("J"+(ind+2)+"-I"+(ind+2));//热量
+                DateTime date = rowSrc.GetCell(11).DateCellValue;
+                row.CreateCell(11).SetCellValue(date.ToString("d"));
+                //row.CreateCell(11).SetCellValue(date.Substring(0, date.IndexOf(" ", System.StringComparison.Ordinal)));
+                row.CreateCell(12).SetCellValue(rbPT.Checked ? "居民" : "商业");
+                row.CreateCell(13).SetCellValue(rowSrc.GetCell(10).NumericCellValue);
+                row.CreateCell(14).SetCellValue(double.Parse(rbPT.Checked ? tbQuNuanFeiPT.Text: tbQuNuanFeiSY.Text));
+                string tmp = "K" + (ind + 2) + "*\"" + reJiLiang.ToString(CultureInfo.CurrentCulture)+"\"";
+                row.CreateCell(15).SetCellFormula(tmp);
+                row.CreateCell(16).SetCellFormula("\""+tbJiBenRenFei.Text + "\"*R" + (ind + 2));//JiChuReJia
+                row.CreateCell(17).SetCellFormula("N" + (ind + 2) + "*O" + (ind + 2));//
+                row.CreateCell(18).SetCellFormula("Q" + (ind + 2) + "+P" + (ind + 2));//
+                row.CreateCell(19).SetCellFormula("R" + (ind + 2) + "-S" + (ind + 2));//
+                //set style
+                for (var i = 0; i < 20; i++) row.GetCell(i).CellStyle = style;
+            }
+            for(var i=0; i<20; i++)
+            {
+                sheetOut.AutoSizeColumn(i);
+                sheetOut.GetRow(0).GetCell(i).CellStyle = headerstyle;
+            }
                 
-                //sheetOut
-                int splitPoint = tbInputDir.Text.LastIndexOf("\\");
-                string outName = tbInputDir.Text.Substring(splitPoint+1);
-                Console.WriteLine(outName);
-                if(!string.IsNullOrEmpty(tbSrc1.Text))outName = outName.Replace(tbSrc1.Text, tbDest1.Text);
-                if (!string.IsNullOrEmpty(tbSrc2.Text)) outName = outName.Replace(tbSrc2.Text, tbDest2.Text);
-                if(cbOutputToSrc.Checked)
-                    outName = tbInputDir.Text.Substring(0, splitPoint + 1) + outName;
-                else
-                {
-                    ofdOut.InitialDirectory = ofdIn.InitialDirectory;
-                    if (ofdOut.ShowDialog() == DialogResult.OK)
-                        outName = ofdOut.FileName;
-                    else outName = null;
-                }
-                if (outName != null)
-                {
-                    FileStream of = File.OpenWrite(outName);
-                    output.Write(of);
-                    of.Dispose();
-                    if (cbAutoOpen.Checked)
-                        System.Diagnostics.Process.Start(outName);
-                }
+            //sheetOut
+            int splitPoint = tbInputDir.Text.LastIndexOf("\\");
+            string outName = tbInputDir.Text.Substring(splitPoint+1);
+            Console.WriteLine(outName);
+            if(!string.IsNullOrEmpty(tbSrc1.Text))outName = outName.Replace(tbSrc1.Text, tbDest1.Text);
+            if (!string.IsNullOrEmpty(tbSrc2.Text)) outName = outName.Replace(tbSrc2.Text, tbDest2.Text);
+            if(cbOutputToSrc.Checked)
+                outName = tbInputDir.Text.Substring(0, splitPoint + 1) + outName;
+            else
+            {
+                ofdOut.InitialDirectory = ofdIn.InitialDirectory;
+                if (ofdOut.ShowDialog() == DialogResult.OK)
+                    outName = ofdOut.FileName;
+                else outName = null;
+            }
+            if (outName != null)
+            {
+                FileStream of = File.OpenWrite(outName);
+                output.Write(of);
+                of.Dispose();
+                if (cbAutoOpen.Checked)
+                    System.Diagnostics.Process.Start(outName);
             }
         }
 
+        private ISheet HtmlTableToXlsSheet(String html)
+        {
+            HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+            doc.Load(html);
+            List< List<String>> table = doc.DocumentNode.SelectNodes("//tr")
+                .Select(tr => tr.Elements("td").Select(td => td.InnerText.Trim()).ToList())
+                .ToList();
+
+            String sheetname = Path.GetFileNameWithoutExtension(html);
+            HSSFWorkbook output = new HSSFWorkbook();
+            ISheet sheetOut = output.CreateSheet(sheetname);
+            IRow rowOut = sheetOut.CreateRow(1);
+            rowOut.CreateCell(0).SetCellValue(table[1][0]);
+                        
+            for(int i=3; i<table.Count-2; i++)
+            {
+                rowOut = sheetOut.CreateRow(i);
+                rowOut.CreateCell(0).SetCellValue(i-2);
+                for(int j=1; j<table[i].Count; j++)
+                {
+                    rowOut.CreateCell(j).SetCellValue(table[i][j]);
+                    if(j == 4 || j==10)
+                        rowOut.CreateCell(j).SetCellValue(double.Parse(table[i][j]));
+                    else if (j == 11) rowOut.CreateCell(j).SetCellValue(DateTime.ParseExact(table[i][j], "yyyy/M/d h:mm:ss", null));
+                }
+            }
+            
+            //For the last 2 rows
+            rowOut = sheetOut.CreateRow(table.Count-2);
+            rowOut.CreateCell(0).SetCellValue(table[table.Count-2][0]);
+            rowOut = sheetOut.CreateRow(table.Count - 1);
+            rowOut.CreateCell(0).SetCellValue(table[table.Count - 1][0]);
+            return sheetOut;
+        }
 
         private void btnOpenThisYear_Click(object sender, EventArgs e)
         {
