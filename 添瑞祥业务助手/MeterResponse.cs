@@ -140,15 +140,20 @@ namespace 添瑞祥业务助手
             if (data[111] == '4') this.state = "电池欠压/";
         //ZhuangTai2
             field = data.Substring(112, 2);
-            int state = int.Parse(field);
-            if (state % 2 == 1) this.state += "积分仪故障/";
-            state/=2;
-            if (state % 2 == 1) this.state += "进水温度传感器故障/";
-            state /= 2;
-            if (state % 2 == 1) this.state += "回水温度传感器故障/";
-            state /= 2;
-            if (state % 2 == 1) this.state += "流量传感器故障";
-            if (this.state == null) this.state = "正常";
+            try
+            {
+                int state = int.Parse(field);
+                if (state % 2 == 1) this.state += "积分仪故障/";
+                state /= 2;
+                if (state % 2 == 1) this.state += "进水温度传感器故障/";
+                state /= 2;
+                if (state % 2 == 1) this.state += "回水温度传感器故障/";
+                state /= 2;
+                if (state % 2 == 1) this.state += "流量传感器故障";
+                if (this.state == null) this.state = "正常";
+            }catch(FormatException e){
+                if (this.state == null) this.state = "正常";//状态字节出现字母
+            }
         }
 
         //Inverse the data order
