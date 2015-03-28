@@ -529,6 +529,8 @@ namespace 添瑞祥业务助手
             }
             if (outName != null)
             {
+                while (File.Exists(outName))
+                    outName=outName.Insert(outName.LastIndexOf("."), "(new)");
                 FileStream of = File.OpenWrite(outName);
                 output.Write(of);
                 of.Dispose();
@@ -560,7 +562,24 @@ namespace 添瑞祥业务助手
                     rowOut.CreateCell(j).SetCellValue(table[i][j]);
                     if(j == 4 || j==10)
                         rowOut.CreateCell(j).SetCellValue(double.Parse(table[i][j]));
-                    else if (j == 11) rowOut.CreateCell(j).SetCellValue(DateTime.ParseExact(table[i][j], "yyyy/M/d h:mm:ss", null));
+                    else if (j == 11)
+                    {
+                        // Parse the datetime field. The format sometimes causes pb
+                        DateTime dt;
+                        string[] formats= {"yyyy/M/d H:mm:ss"};//, "yyyy/M/d hh:mm:ss"};
+                        if (!DateTime.TryParseExact(table[i][j], formats,
+                              null,
+                              DateTimeStyles.None,
+                              out dt))
+                        {
+                            MessageBox.Show("日期格式出现问题，如果格式规范有变化请联系开发者。文件未能正确生成");
+                            return sheetOut;
+                        }
+                        //DateTime.ParseExact(table[i][j], "yyyy/M/d h:mm:ss", null)
+                        else
+                            rowOut.CreateCell(j).SetCellValue(dt);
+                    }
+                        
                 }
             }
             
