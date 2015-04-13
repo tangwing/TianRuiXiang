@@ -27,11 +27,14 @@ namespace 添瑞祥业务助手
         private const string CONFIG_FILE = "config.ini";
         private const string CONFIG_SECTION_1 = "MeterIdTransform";
         private const string CONFIG_SECTION_4 = "FeeCalculate";
+        private System.Windows.Forms.SaveFileDialog sfdOut;
 
         public Form1()
         {
             //Thread.CurrentThread.CurrentCulture = new CultureInfo("fr-FR");
             InitializeComponent();
+            sfdOut = new SaveFileDialog();
+            sfdOut.Filter = "Excel Files (*.xls)|*.xls";
             loadConfig();
         }
 
@@ -55,7 +58,8 @@ namespace 添瑞祥业务助手
             IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "tbJiBenRenFei", ref pat);
             tbJiBenRenFei.Text = pat; pat = ".";
             IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "defaultdir", ref pat);
-            ofdIn.InitialDirectory = ofdOut.InitialDirectory = (pat); pat = "2013";
+            ofdIn.InitialDirectory = ofdOut.InitialDirectory = sfdOut.InitialDirectory = (pat); pat = "2013";
+
             IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "tbSrc1", ref pat);
             tbSrc1.Text = pat; pat = "2014";
             IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "tbDest1", ref pat);
@@ -65,7 +69,20 @@ namespace 添瑞祥业务助手
             IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "tbDest2", ref pat);
             tbDest2.Text = pat; pat = "True";
             IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "cbAutoOpen", ref pat);
-            cbAutoOpen.Checked = pat.Equals("True"); 
+            cbAutoOpen.Checked = pat.Equals("True");
+
+            //新增的3个热费计算参数
+            pat = "M-BUS";
+            IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "tbDTU", ref pat);
+            tbDTU.Text = pat;
+
+            pat = "添瑞祥";
+            IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "tbReBiaoChangJia", ref pat);
+            tbReBiaoChangJia.Text = pat;
+
+            pat = "DN20";
+            IniFile.GetString(CONFIG_FILE, CONFIG_SECTION_4, "tbReBiaoKouJing", ref pat);
+            tbReBiaoKouJing.Text = pat;
         }
 
         /* 检测按钮*/
@@ -403,11 +420,17 @@ namespace 添瑞祥业务助手
             IniFile.Write(CONFIG_FILE, CONFIG_SECTION_4, "tbDest2", tbDest2.Text );
             IniFile.Write(CONFIG_FILE, CONFIG_SECTION_4, "cbAutoOpen", cbAutoOpen.Checked.ToString());
             IniFile.Write(CONFIG_FILE, CONFIG_SECTION_4, "defaultdir", Path.GetDirectoryName(ofdIn.FileName));
+            //新增的3个热费计算参数
+            IniFile.Write(CONFIG_FILE, CONFIG_SECTION_4, "tbDTU", tbDTU.Text);
+            IniFile.Write(CONFIG_FILE, CONFIG_SECTION_4, "tbReBiaoChangJia", tbReBiaoChangJia.Text);
+            IniFile.Write(CONFIG_FILE, CONFIG_SECTION_4, "tbReBiaoKouJing", tbReBiaoKouJing.Text);
         }
+
+        //热费计算 导出计算后表格
         private void btnExport_Click(object sender, EventArgs e)
         {
             saveFeeCalculateConfig();
-
+            rtbLog.Text="正在处理...";
             ISheet sheetIn = null;
             ISheet sheetIn2 = null;
             //Deal with html file
@@ -479,16 +502,31 @@ namespace 添瑞祥业务助手
                 IRow rowSrc = sheetIn.GetRow(ind + 3);
                 IRow row = sheetOut.CreateRow(ind+1);
                 row.CreateCell(0).SetCellValue(ind + 1);
-                row.CreateCell(1).SetCellValue("M-BUS");
+                row.CreateCell(1).SetCellValue(tbDTU.Text);
                 row.CreateCell(2).SetCellValue(residence);
                 row.CreateCell(3).SetCellValue(rowSrc.GetCell(1).StringCellValue);
                 row.CreateCell(4).SetCellValue(rowSrc.GetCell(2).StringCellValue);
                 row.CreateCell(5).SetCellValue(rowSrc.GetCell(3).StringCellValue);
-                row.CreateCell(6).SetCellValue("添瑞祥");
-                row.CreateCell(7).SetCellValue("DN20");
-                if(sheetIn2 == null)
-                    row.CreateCell(8).SetCellValue(0);//上热量
-                else row.CreateCell(8).SetCellValue(sheetIn2.GetRow(ind+3).GetCell(4).NumericCellValue);//上热量
+                row.CreateCell(6).SetCellValue(tbReBiaoChangJia.Text);
+                row.CreateCell(7).SetCellValue(tbReBiaoKouJing.Text);
+                row.CreateCell(8).SetCellValue(0);//上热量 预置为零
+                if (sheetIn2 != null)
+                {// 寻找对应项如存在则提取热量
+                    string meterId = rowSrc.GetCell(3).StringCellValue.Trim();
+                    int i;
+                    for (i = 3; i < sheetIn2.LastRowNum - 1; i++)
+                    {
+                        // Compare the meter id to find the correspondance
+                        if (sheetIn2.GetRow(i).GetCell(3).StringCellValue.Trim().Equals(meterId))
+                        {
+                            row.GetCell(8).SetCellValue(sheetIn2.GetRow(i).GetCell(4).NumericCellValue);//上热量
+                            Console.WriteLine(meterId + "上年热量: " + row.GetCell(8).NumericCellValue);
+                            break;
+                        }
+                    }
+                    if(i==sheetIn2.LastRowNum-1) //显示新用户
+                       log("用户"+row.GetCell(0).NumericCellValue+": "+row.GetCell(3).StringCellValue+"，无上年度数据");
+                }
                 row.CreateCell(9).SetCellValue(rowSrc.GetCell(4).NumericCellValue);//本年热量. 
                 row.CreateCell(10).SetCellFormula("J"+(ind+2)+"-I"+(ind+2));//热量
                 DateTime date = rowSrc.GetCell(11).DateCellValue;
@@ -522,9 +560,9 @@ namespace 添瑞祥业务助手
                 outName = tbInputDir.Text.Substring(0, splitPoint + 1) + outName;
             else
             {
-                ofdOut.InitialDirectory = ofdIn.InitialDirectory;
-                if (ofdOut.ShowDialog() == DialogResult.OK)
-                    outName = ofdOut.FileName;
+                sfdOut.InitialDirectory = ofdOut.InitialDirectory = ofdIn.InitialDirectory;//ofdOut not used
+                if (sfdOut.ShowDialog() == DialogResult.OK)
+                    outName = sfdOut.FileName;
                 else outName = null;
             }
             if (outName != null)
@@ -539,6 +577,7 @@ namespace 添瑞祥业务助手
             }
         }
 
+        //将html文件转化为excel
         private ISheet HtmlTableToXlsSheet(String html)
         {
             HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
@@ -607,7 +646,15 @@ namespace 添瑞祥业务助手
             }
         }
 
+        private void groupBox5_Enter(object sender, EventArgs e)
+        {
 
+        }
+
+        private void log(string msg)
+        {
+            rtbLog.AppendText("\n"+msg);
+        }
 
     }
 }

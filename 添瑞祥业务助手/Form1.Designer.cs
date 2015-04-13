@@ -65,14 +65,17 @@
             this.txtLog = new System.Windows.Forms.TextBox();
             this.tpFee = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.panel5 = new System.Windows.Forms.Panel();
+            this.rbXls = new System.Windows.Forms.RadioButton();
+            this.rbHtml = new System.Windows.Forms.RadioButton();
+            this.label11 = new System.Windows.Forms.Label();
             this.tbInputLastY = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.btnOpenLastYear = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
             this.tbInputDir = new System.Windows.Forms.TextBox();
             this.btnOpenThisYear = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.panel6 = new System.Windows.Forms.Panel();
             this.rbSY = new System.Windows.Forms.RadioButton();
             this.label19 = new System.Windows.Forms.Label();
@@ -107,9 +110,14 @@
             this.label12 = new System.Windows.Forms.Label();
             this.ofdIn = new System.Windows.Forms.OpenFileDialog();
             this.ofdOut = new System.Windows.Forms.OpenFileDialog();
-            this.label11 = new System.Windows.Forms.Label();
-            this.rbHtml = new System.Windows.Forms.RadioButton();
-            this.rbXls = new System.Windows.Forms.RadioButton();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.tbDTU = new System.Windows.Forms.TextBox();
+            this.tbReBiaoKouJing = new System.Windows.Forms.TextBox();
+            this.tbReBiaoChangJia = new System.Windows.Forms.TextBox();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.tabControl.SuspendLayout();
             this.tpValidator.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -127,14 +135,15 @@
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
-            this.panel5.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.panel5.SuspendLayout();
             this.panel6.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.panel4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel3.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox5.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -542,11 +551,23 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.groupBox5);
             this.splitContainer2.Panel2.Controls.Add(this.btnExport);
             this.splitContainer2.Panel2.Controls.Add(this.groupBox3);
             this.splitContainer2.Size = new System.Drawing.Size(739, 547);
             this.splitContainer2.SplitterDistance = 336;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.panel5);
+            this.groupBox4.Controls.Add(this.panel6);
+            this.groupBox4.Location = new System.Drawing.Point(25, 294);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(285, 233);
+            this.groupBox4.TabIndex = 7;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "参数";
             // 
             // panel5
             // 
@@ -563,6 +584,37 @@
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(270, 161);
             this.panel5.TabIndex = 14;
+            // 
+            // rbXls
+            // 
+            this.rbXls.AutoSize = true;
+            this.rbXls.Location = new System.Drawing.Point(148, 8);
+            this.rbXls.Name = "rbXls";
+            this.rbXls.Size = new System.Drawing.Size(52, 21);
+            this.rbXls.TabIndex = 13;
+            this.rbXls.Text = "XLS";
+            this.rbXls.UseVisualStyleBackColor = true;
+            // 
+            // rbHtml
+            // 
+            this.rbHtml.AutoSize = true;
+            this.rbHtml.Checked = true;
+            this.rbHtml.Location = new System.Drawing.Point(78, 8);
+            this.rbHtml.Name = "rbHtml";
+            this.rbHtml.Size = new System.Drawing.Size(64, 21);
+            this.rbHtml.TabIndex = 12;
+            this.rbHtml.TabStop = true;
+            this.rbHtml.Text = "HTML";
+            this.rbHtml.UseVisualStyleBackColor = true;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(8, 12);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(64, 17);
+            this.label11.TabIndex = 11;
+            this.label11.Text = "文件格式";
             // 
             // tbInputLastY
             // 
@@ -615,17 +667,6 @@
             this.btnOpenThisYear.Text = "打开";
             this.btnOpenThisYear.UseVisualStyleBackColor = true;
             this.btnOpenThisYear.Click += new System.EventHandler(this.btnOpenThisYear_Click);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.panel5);
-            this.groupBox4.Controls.Add(this.panel6);
-            this.groupBox4.Location = new System.Drawing.Point(25, 294);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(285, 233);
-            this.groupBox4.TabIndex = 7;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "输入参数";
             // 
             // panel6
             // 
@@ -800,9 +841,9 @@
             // 
             // btnExport
             // 
-            this.btnExport.Location = new System.Drawing.Point(20, 338);
+            this.btnExport.Location = new System.Drawing.Point(87, 465);
             this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(361, 104);
+            this.btnExport.Size = new System.Drawing.Size(214, 63);
             this.btnExport.TabIndex = 7;
             this.btnExport.Text = "导出";
             this.btnExport.UseVisualStyleBackColor = true;
@@ -810,6 +851,12 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.tbReBiaoChangJia);
+            this.groupBox3.Controls.Add(this.tbReBiaoKouJing);
+            this.groupBox3.Controls.Add(this.tbDTU);
+            this.groupBox3.Controls.Add(this.label22);
+            this.groupBox3.Controls.Add(this.label21);
+            this.groupBox3.Controls.Add(this.label20);
             this.groupBox3.Controls.Add(this.cbOutputToSrc);
             this.groupBox3.Controls.Add(this.cbAutoOpen);
             this.groupBox3.Controls.Add(this.tbDest2);
@@ -824,17 +871,17 @@
             this.groupBox3.Controls.Add(this.label12);
             this.groupBox3.Location = new System.Drawing.Point(3, 21);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(378, 217);
+            this.groupBox3.Size = new System.Drawing.Size(378, 283);
             this.groupBox3.TabIndex = 6;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "导出参数";
+            this.groupBox3.Text = "参数";
             // 
             // cbOutputToSrc
             // 
             this.cbOutputToSrc.AutoSize = true;
             this.cbOutputToSrc.Checked = true;
             this.cbOutputToSrc.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbOutputToSrc.Location = new System.Drawing.Point(17, 162);
+            this.cbOutputToSrc.Location = new System.Drawing.Point(17, 245);
             this.cbOutputToSrc.Name = "cbOutputToSrc";
             this.cbOutputToSrc.Size = new System.Drawing.Size(111, 21);
             this.cbOutputToSrc.TabIndex = 18;
@@ -846,7 +893,7 @@
             this.cbAutoOpen.AutoSize = true;
             this.cbAutoOpen.Checked = true;
             this.cbAutoOpen.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbAutoOpen.Location = new System.Drawing.Point(164, 162);
+            this.cbAutoOpen.Location = new System.Drawing.Point(164, 245);
             this.cbAutoOpen.Name = "cbAutoOpen";
             this.cbAutoOpen.Size = new System.Drawing.Size(97, 21);
             this.cbAutoOpen.TabIndex = 17;
@@ -855,7 +902,7 @@
             // 
             // tbDest2
             // 
-            this.tbDest2.Location = new System.Drawing.Point(217, 122);
+            this.tbDest2.Location = new System.Drawing.Point(217, 205);
             this.tbDest2.Name = "tbDest2";
             this.tbDest2.Size = new System.Drawing.Size(100, 23);
             this.tbDest2.TabIndex = 16;
@@ -864,7 +911,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(161, 122);
+            this.label15.Location = new System.Drawing.Point(161, 205);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(50, 17);
             this.label15.TabIndex = 15;
@@ -872,7 +919,7 @@
             // 
             // tbSrc2
             // 
-            this.tbSrc2.Location = new System.Drawing.Point(55, 122);
+            this.tbSrc2.Location = new System.Drawing.Point(55, 205);
             this.tbSrc2.Name = "tbSrc2";
             this.tbSrc2.Size = new System.Drawing.Size(100, 23);
             this.tbSrc2.TabIndex = 14;
@@ -881,7 +928,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(33, 125);
+            this.label18.Location = new System.Drawing.Point(33, 208);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(22, 17);
             this.label18.TabIndex = 13;
@@ -891,7 +938,7 @@
             // 
             this.textBox10.BackColor = System.Drawing.Color.White;
             this.textBox10.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox10.Location = new System.Drawing.Point(17, 88);
+            this.textBox10.Location = new System.Drawing.Point(17, 171);
             this.textBox10.Multiline = true;
             this.textBox10.Name = "textBox10";
             this.textBox10.Size = new System.Drawing.Size(10, 57);
@@ -899,7 +946,7 @@
             // 
             // tbDest1
             // 
-            this.tbDest1.Location = new System.Drawing.Point(217, 93);
+            this.tbDest1.Location = new System.Drawing.Point(217, 176);
             this.tbDest1.Name = "tbDest1";
             this.tbDest1.Size = new System.Drawing.Size(100, 23);
             this.tbDest1.TabIndex = 11;
@@ -908,7 +955,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(161, 93);
+            this.label17.Location = new System.Drawing.Point(161, 176);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(50, 17);
             this.label17.TabIndex = 10;
@@ -916,7 +963,7 @@
             // 
             // tbSrc1
             // 
-            this.tbSrc1.Location = new System.Drawing.Point(55, 93);
+            this.tbSrc1.Location = new System.Drawing.Point(55, 176);
             this.tbSrc1.Name = "tbSrc1";
             this.tbSrc1.Size = new System.Drawing.Size(100, 23);
             this.tbSrc1.TabIndex = 9;
@@ -925,7 +972,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(33, 96);
+            this.label16.Location = new System.Drawing.Point(33, 179);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(22, 17);
             this.label16.TabIndex = 8;
@@ -934,7 +981,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(14, 68);
+            this.label12.Location = new System.Drawing.Point(14, 151);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(106, 17);
             this.label12.TabIndex = 6;
@@ -951,36 +998,77 @@
             this.ofdOut.DefaultExt = "xls";
             this.ofdOut.Filter = "Excel Files|*.xls|All Files|*.*";
             // 
-            // label11
+            // label20
             // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(8, 12);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(64, 17);
-            this.label11.TabIndex = 11;
-            this.label11.Text = "文件格式";
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(14, 35);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(65, 17);
+            this.label20.TabIndex = 19;
+            this.label20.Text = "DTU设备";
             // 
-            // rbHtml
+            // label21
             // 
-            this.rbHtml.AutoSize = true;
-            this.rbHtml.Checked = true;
-            this.rbHtml.Location = new System.Drawing.Point(78, 8);
-            this.rbHtml.Name = "rbHtml";
-            this.rbHtml.Size = new System.Drawing.Size(64, 21);
-            this.rbHtml.TabIndex = 12;
-            this.rbHtml.TabStop = true;
-            this.rbHtml.Text = "HTML";
-            this.rbHtml.UseVisualStyleBackColor = true;
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(14, 107);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(64, 17);
+            this.label21.TabIndex = 20;
+            this.label21.Text = "热表口径";
             // 
-            // rbXls
+            // label22
             // 
-            this.rbXls.AutoSize = true;
-            this.rbXls.Location = new System.Drawing.Point(148, 8);
-            this.rbXls.Name = "rbXls";
-            this.rbXls.Size = new System.Drawing.Size(52, 21);
-            this.rbXls.TabIndex = 13;
-            this.rbXls.Text = "XLS";
-            this.rbXls.UseVisualStyleBackColor = true;
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(14, 70);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(64, 17);
+            this.label22.TabIndex = 21;
+            this.label22.Text = "热表厂家";
+            // 
+            // tbDTU
+            // 
+            this.tbDTU.Location = new System.Drawing.Point(84, 32);
+            this.tbDTU.Name = "tbDTU";
+            this.tbDTU.Size = new System.Drawing.Size(100, 23);
+            this.tbDTU.TabIndex = 22;
+            this.tbDTU.Text = "M-BUS";
+            // 
+            // tbReBiaoKouJing
+            // 
+            this.tbReBiaoKouJing.Location = new System.Drawing.Point(84, 104);
+            this.tbReBiaoKouJing.Name = "tbReBiaoKouJing";
+            this.tbReBiaoKouJing.Size = new System.Drawing.Size(100, 23);
+            this.tbReBiaoKouJing.TabIndex = 23;
+            this.tbReBiaoKouJing.Text = "DN20";
+            // 
+            // tbReBiaoChangJia
+            // 
+            this.tbReBiaoChangJia.Location = new System.Drawing.Point(84, 67);
+            this.tbReBiaoChangJia.Name = "tbReBiaoChangJia";
+            this.tbReBiaoChangJia.Size = new System.Drawing.Size(100, 23);
+            this.tbReBiaoChangJia.TabIndex = 24;
+            this.tbReBiaoChangJia.Text = "添瑞祥";
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.rtbLog);
+            this.groupBox5.Location = new System.Drawing.Point(4, 317);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(377, 125);
+            this.groupBox5.TabIndex = 8;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "运行信息";
+            this.groupBox5.Enter += new System.EventHandler(this.groupBox5_Enter);
+            // 
+            // rtbLog
+            // 
+            this.rtbLog.Enabled = false;
+            this.rtbLog.Location = new System.Drawing.Point(0, 22);
+            this.rtbLog.Name = "rtbLog";
+            this.rtbLog.ReadOnly = true;
+            this.rtbLog.Size = new System.Drawing.Size(377, 103);
+            this.rtbLog.TabIndex = 0;
+            this.rtbLog.Text = "";
             // 
             // Form1
             // 
@@ -1018,9 +1106,9 @@
             this.splitContainer2.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.panel5.ResumeLayout(false);
             this.panel5.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
             this.panel6.ResumeLayout(false);
             this.panel6.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -1031,6 +1119,7 @@
             this.panel3.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1118,6 +1207,14 @@
         private System.Windows.Forms.RadioButton rbXls;
         private System.Windows.Forms.RadioButton rbHtml;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox tbDTU;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox tbReBiaoChangJia;
+        private System.Windows.Forms.TextBox tbReBiaoKouJing;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.RichTextBox rtbLog;
 
     }
 }
